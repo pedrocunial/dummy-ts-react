@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 
 import UserRow from 'components/UserRow';
 
@@ -15,23 +15,38 @@ interface Props {
 @observer
 export class UserShowcase extends React.PureComponent<Props> {
   purgeUser = (id: number | string) => {
-    console.log('[err] cannot delete user, feature not yet supported', id);
+    console.log('trying to delete user for id ', id);
+    const { userStore } = this.props;
+
+    if (id && userStore) {
+      userStore.deleteUserById(+id);
+    }
   };
 
   render() {
     const { userStore } = this.props;
 
-    const users = userStore?.users || [];
+    const users = userStore?.users;
+    const error = userStore?.error;
+    const errorMessage = error && `Error: ${error}`;
     console.log('render showcase', users);
 
     return (
       <Grid container direction='column'>
-        <Grid item>User count: {userStore?.usersCount}</Grid>
-        {users.map(user => (
-          <Grid item>
-            <UserRow {...user} deleteUser={this.purgeUser} />
-          </Grid>
-        ))}
+        <Grid item>
+          <Typography variant='h1'>
+            User count: {userStore?.usersCount}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant='h2'>{errorMessage}</Typography>
+        </Grid>
+        {users &&
+          users.map(user => (
+            <Grid key={`user-${user.id}`} item>
+              <UserRow {...user} deleteUser={this.purgeUser} />
+            </Grid>
+          ))}
       </Grid>
     );
   }
