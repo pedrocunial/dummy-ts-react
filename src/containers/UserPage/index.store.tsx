@@ -12,8 +12,8 @@ export class UserStore {
   constructor() {
     reaction(
       () => this.users.length,
-      len => {
-        this.error = len > 1 ? 'ferrou' : '';
+      (len) => {
+        this.error = len > 1 ? 'tem mais de uma pessoa ai ein?' : '';
       },
     );
   }
@@ -29,7 +29,27 @@ export class UserStore {
   };
 
   @action
-  addUser(name: string, phone?: string, targetId?: number) {
+  appendUser = (user: User) => {
+    const foundIndex = this.users.findIndex((value) => value.id === user.id);
+    if (foundIndex < 0) {
+      this.users.push(user);
+    } else {
+      this.users[foundIndex] = user;
+    }
+  };
+
+  @action
+  addUser(user?: User) {
+    console.log('adding user', user);
+    if (user) {
+      this.appendUser(user);
+    } else {
+      console.log('i refuse');
+    }
+  }
+
+  @action
+  createUser(name: string, phone?: string, targetId?: number) {
     console.log('create user', arguments);
     const id: number = targetId ? targetId : UserStore.idCounter;
 
@@ -42,7 +62,7 @@ export class UserStore {
 
   @action
   updatePhoneForName = (name: string, phone?: string) => {
-    const user = this.users.find(user => user.name === name);
+    const user = this.users.find((user) => user.name === name);
 
     if (user) {
       user.phone = phone;

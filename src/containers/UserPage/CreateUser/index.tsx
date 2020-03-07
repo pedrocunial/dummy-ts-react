@@ -4,6 +4,8 @@ import UserStore from '../index.store';
 import { TextField, Button, Grid } from '@material-ui/core';
 
 import BaseEvent from 'models/baseEvent';
+import { createUser } from 'api/user';
+import User from 'models/user';
 
 interface Props {
   userStore?: UserStore;
@@ -37,13 +39,15 @@ export class CreateUser extends React.PureComponent<Props, any> {
     }
   };
 
-  createUser = () => {
+  createUser = async () => {
     const { userStore } = this.props;
 
-    const id = this.state.id ? +this.state.id : undefined;
-
     console.log('creating user with state', this.state);
-    userStore?.addUser(this.state.name, this.state.phone, id);
+    const createdUser = await createUser(this.state as User);
+
+    console.log('created user', createdUser);
+
+    userStore?.addUser(createdUser);
 
     this.resetState();
   };

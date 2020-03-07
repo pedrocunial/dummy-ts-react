@@ -1,37 +1,23 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { TextField, Button } from '@material-ui/core';
 
 interface Props {
-  fetchUserById: (id: any) => void;
+  searchUser: () => void;
+  updateId: (id: string) => void;
 }
 
-export class SearchUser extends React.PureComponent<Props> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { id: '' };
-  }
+export const SearchUser: React.FC<Props> = ({ searchUser, updateId }) => {
+  const onIdChange = useCallback((event) => updateId(event?.target?.value), [
+    updateId,
+  ]);
 
-  searchUser = ({ target }: any) => {
-    console.log('search user', target);
-
-    this.props.fetchUserById(target?.value);
-  };
-
-  updateId = ({ target }: any) => {
-    console.log('update id', target);
-
-    this.setState({ id: target?.id });
-  };
-
-  render() {
-    return (
-      <React.Fragment>
-        <TextField label='id' onChange={this.updateId} />
-        <Button onClick={this.searchUser}>Search</Button>
-      </React.Fragment>
-    );
-  }
-}
+  return (
+    <React.Fragment>
+      <TextField label='id' onChange={onIdChange} />
+      <Button onClick={searchUser}>Search</Button>
+    </React.Fragment>
+  );
+};
 
 export default SearchUser;

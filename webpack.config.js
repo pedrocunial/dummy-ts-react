@@ -1,9 +1,40 @@
-import path from 'path';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+// const path = require('path');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-export default {
+// module.exports = {
+//   entry: './src/index.tsx',
+//   resolve: {
+//     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+//   },
+//   output: {
+//     path: path.join(__dirname, 'dist'),
+//     filename: 'bundle.min.js',
+//   },
+//   module: {
+//     rules: [
+//       {
+//         test: /\.tsx?$/,
+//         loader: 'awesome-typescript-loader',
+//       },
+//       {
+//         test: /\.css$/i,
+//         use: ['style-loader', 'css-loader'],
+//       },
+//     ],
+//   },
+//   plugins: [
+//     new HtmlWebpackPlugin({
+//       template: './src/index.html',
+//     }),
+//   ],
+// };
+
+const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
   output: {
     path: path.resolve('dist'),
     filename: '[name].js',
@@ -29,7 +60,11 @@ export default {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: 'awesome-typescript-loader',
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader',
       },
     ],
   },

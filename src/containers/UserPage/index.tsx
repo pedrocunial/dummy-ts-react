@@ -2,9 +2,9 @@ import React from 'react';
 import { toJS } from 'mobx';
 import { Provider } from 'mobx-react';
 
-import SearchUser from 'components/SearchUser';
 import Pizza from 'containers/Pizza';
 
+import SearchUser from './SearchUser';
 import UserShowcase from './UserShowcase';
 import CreateUser from './CreateUser';
 import { UserStore } from './index.store';
@@ -18,7 +18,7 @@ export class UserPage extends React.PureComponent {
     return (
       <Provider userStore={this.userStore}>
         <UserShowcase />
-        <SearchUser fetchUserById={(id: string | number) => console.log(id)} />
+        <SearchUser />
         <CreateUser />
         <Pizza />
       </Provider>
